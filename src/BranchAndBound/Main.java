@@ -1,5 +1,7 @@
 package BranchAndBound;
 
+import java.util.List;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -9,5 +11,9 @@ public class Main {
         DecisionTree decisionTree = new DecisionTree(commodities, 10);
         decisionTree.createTree();
         System.out.println(decisionTree.findMaxValue());
+        List<Integer> list = decisionTree.loadedItem();
+        for (int i : list){
+            System.out.print(i + " ");
+        }
     }
 }
