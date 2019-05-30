@@ -48,7 +48,7 @@ public class DecisionTree {
     //如果当前记录的最大value > new节点的estimate，则剪枝
     public void __createTree(Node node, int depth, int maxValue){
         if (node == null) return;
-        if (depth > quantity) return;
+        if (depth >= quantity) return;
 
         int newRoom = node.room - commodities[1][depth];
 
@@ -72,6 +72,17 @@ public class DecisionTree {
 
         __createTree(node.left, depth+1, maxValue);
         __createTree(node.right, depth+1, maxValue);
+    }
+
+    public int findMaxValue(){
+        return findMaxValue(root, 0);
+    }
+
+    private int findMaxValue(Node node, int max){
+        if (node == null) return max;
+
+        if (node.value > max) max = node.value;
+        return Math.max(findMaxValue(node.left, max), findMaxValue(node.right, max));
     }
 
 }
