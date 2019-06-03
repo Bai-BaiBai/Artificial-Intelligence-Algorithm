@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
  */
 public class AntCityAlgorithm {
 
+    //旅行函数，穿入一个蚂蚁作为参数，蚂蚁所在初始位置和城市群为Ant的构造参数
     public void travel(Ant ant){
         //同一个蚂蚁每次旅行完输出一次路径
         int minDistance = Integer.MAX_VALUE;
