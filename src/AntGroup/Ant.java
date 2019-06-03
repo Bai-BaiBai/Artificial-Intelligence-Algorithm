@@ -41,21 +41,20 @@ public class Ant {
         return path;
     }
 
-    //传入蚂蚁初始的位置，方法结束后Path数组存储这次行走的路径
+    //对外接口，蚂蚁开始旅行，方法结束后Path数组存储这次行走的路径
     public void travel(){
         int currentCity = startCity;
         for (int i = 0; i < City.CITYSIZE; i++) {//i代表下一步走的是第i步
-//            System.out.println("第" + i + "步" + startCity);
             int res = moveToNextCity(currentCity, i);
             while (res == -1 && i != City.CITYSIZE -1){
                 res = moveToNextCity(currentCity, i);
             }
             currentCity = res;
-        };
+        }
     }
 
     //蚂蚁从currentCicy走向下一个城市，返回选择的下一座城市，并更新信息素矩阵
-    public int moveToNextCity(int currentCity, int stepIndex){
+    private int moveToNextCity(int currentCity, int stepIndex){
         visitedFlag[currentCity] = true;
         path[stepIndex] = currentCity;
 
@@ -68,23 +67,20 @@ public class Ant {
     }
 
     //选择下一步要走的城市 :有可能返回-1
-    public int chooseNextCity(int currentCity){
+    private int chooseNextCity(int currentCity){
 
         double[] attractive = new double[City.CITYSIZE];//存储剩余可走城市对蚂蚁的吸引力
 
         double sumAttractive = 0.00;
         for (int i = 0; i < City.CITYSIZE; i++) {
             if (!visitedFlag[i]){//如果此城市没有被访问过
-                attractive[i] = ATTRACTIVE_CONSTANT /Math.pow(city.distance[currentCity][i],2) * city.pheromone[currentCity][i];
+                attractive[i] = ATTRACTIVE_CONSTANT /Math.pow(city.distance[currentCity][i],2)
+                                * city.pheromone[currentCity][i];
                 sumAttractive += attractive[i];
             }else {
                 attractive[i] = 0;//如果访问过，吸引力为0
             }
         }
-
-        //输出吸引力
-//        outPutAttractive(attractive, currentCity);
-
         //轮盘赌算法找到吸引力最大的城市并判断合法性返回
         int nextCity = roulette(sumAttractive, attractive);
 
@@ -92,7 +88,7 @@ public class Ant {
     }
 
     //轮盘赌算法，传入各城市的当前吸引力和 吸引力总和,返回选出的城市代号
-    public int roulette(double sumAttractive, double[] attractive){
+    private int roulette(double sumAttractive, double[] attractive){
 
         double[] probability = new double[City.CITYSIZE];//存储走i城市对应的总概率
 
@@ -109,7 +105,7 @@ public class Ant {
                 return i;
             }
         }
-
+        //如果生成的随机数为0，或者所有的城市已经访问完毕，返回值为 -1，抛给上层判断
         return -1;
     }
 
